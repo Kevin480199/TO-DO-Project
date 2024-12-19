@@ -2,13 +2,11 @@ package com.example.demo.Models;
 
 public class Task {
     private int id;
-    private static int count = 1000;
     private String name;
     private String description;
 
-    public Task(String name, String description) {
-        id = count;
-        count++;
+    public Task(int id , String name, String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
     }

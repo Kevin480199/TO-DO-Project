@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
+@RequestMapping("/api/task")
 public class TaskController {
     private ArrayList<Task> tasks = new ArrayList<>();
-
+    int counter = 1;
     @GetMapping
     public ArrayList<Task> getAllBooks(){
         return tasks;
@@ -18,8 +19,21 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<Task> addTask(@RequestBody Task task){
-        if(task != null &&  task.getId() >= 1000){
-            tasks.add(task);
+        if(task != null){
+            if (tasks.isEmpty()){
+                counter = 1;
+                task.setId(counter);
+                tasks.add(task);
+            }else {
+                for (int i = 0; i < tasks.size(); i++){
+                    if (tasks.get(i).getId() == counter) {
+                        counter++;
+                        task.setId(counter);
+                        tasks.add(task);
+                        break;
+                    }
+                }
+            }
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -47,9 +61,9 @@ public class TaskController {
             }
         }
         if (found) {
-            return ResponseEntity.ok("Book with ID " + id + " has been deleted");
+            return ResponseEntity.ok("Task with ID " + id + " has been deleted");
         } else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Books with ID " + id + " Was not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task with ID " + id + " Was not found");
         }
     }
 
