@@ -1,14 +1,14 @@
 package org.example.frontend;
 
 public class Task {
-    private int id;
-    private static int count = 1000;
+    private int id = 0;
     private String name;
     private String description;
 
+    public Task() {}
+
     public Task(String name, String description) {
-        id = count;
-        count++;
+        this.id = id;
         this.name = name;
         this.description = description;
     }

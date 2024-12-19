@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class HelloController {
     @FXML
@@ -40,7 +41,7 @@ public class HelloController {
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(myTask);
 
-            URL url = new URL("http://localhost:8100/");
+            URL url = new URL("http://localhost:8100/api/task");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -77,7 +78,7 @@ public class HelloController {
     void removeTask(ActionEvent event) {
         try{
             int id = Integer.parseInt(inputID.getText());
-            URL url = new URL("http://localhost:8100/" + id);
+            URL url = new URL("http://localhost:8100/api/task/" + id);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -94,17 +95,49 @@ public class HelloController {
     @FXML
     void getAllTasks(ActionEvent event) {
         try{
-            URL url = new URL("http://localhost:8100");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
 
-            String response = readResponse(connection);
-            areaTextBox.setText(response);
+            try {
+                ArrayList<Task> tasks = fetchTasks();
+                // Display tasks in TextArea
+                displayTasksInTextArea(tasks);
+            } catch (Exception e) {
+                areaTextBox.setText("Error: " + e.getMessage());
+            }
 
         } catch (Exception e) {
             areaTextBox.setText("Error " + e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+    public ArrayList<Task> fetchTasks() throws Exception {
+        String urlString = "http://localhost:8100/api/task";  // Your API URL
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        // Check if the request is successful
+        if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            throw new Exception("Failed to fetch tasks: " + connection.getResponseCode());
+        }
+
+        // Read the response
+        String response = readResponse(connection);
+
+        // Close the connection after reading the response
+        connection.disconnect();
+
+        // Parse the JSON response into a list of Task objects
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(response, objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Task.class));
+    }
+    private void displayTasksInTextArea(ArrayList<Task> tasks) {
+        StringBuilder displayText = new StringBuilder();
+        for (Task task : tasks) {
+            displayText.append("ID: ").append(task.getId()).append("\n")
+                    .append("Name: ").append(task.getName()).append("\n")
+                    .append("Description: ").append(task.getDescription()).append("\n\n");
+        }
+        areaTextBox.setText(displayText.toString());
     }
     @FXML
     void replaceTask(ActionEvent event) {
@@ -121,7 +154,7 @@ public class HelloController {
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(myTask);
 
-            URL url = new URL("http://localhost:8100/" + id);
+            URL url = new URL("http://localhost:8100/api/task/" + id);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/json");
