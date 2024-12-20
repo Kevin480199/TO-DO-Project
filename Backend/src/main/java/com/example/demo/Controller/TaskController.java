@@ -9,11 +9,12 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/task")
-public class TaskController {
+public class TaskController implements TaskService {
     private ArrayList<Task> tasks = new ArrayList<>();
     int counter = 1;
+
     @GetMapping
-    public ArrayList<Task> getAllBooks(){
+    public ArrayList<Task> getAllTasks(){
         return tasks;
     }
 
