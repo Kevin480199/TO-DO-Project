@@ -35,9 +35,9 @@ public class HelloController {
         try {
             String name = inputName.getText();
             String description = inputDescription.getText();
-
+            // Creates an object
             Task myTask = new Task(name, description);
-
+            // Convert object to a json
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(myTask);
 
@@ -46,14 +46,25 @@ public class HelloController {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
-
+            // Sends json data
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = json.getBytes(StandardCharsets.UTF_8);
                 os.write(input);
             }
 
             String response = readResponse(connection);
-            areaTextBox.setText(response + "\n");
+            // Check for a successful response
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
+                Task createdTask = mapper.readValue(response, Task.class); // Assuming the server returns the created Task with ID
+
+                areaTextBox.appendText("Task successfully added!\n");
+                areaTextBox.appendText("ID: " + createdTask.getId() + "\n");
+                areaTextBox.appendText("Name: " + createdTask.getName() + "\n");
+                areaTextBox.appendText("Description: " + createdTask.getDescription() + "\n");
+
+            } else {
+                areaTextBox.appendText("Error: Unable to add task.\n");
+            }
         } catch (Exception e) {
             areaTextBox.setText("Error: " + e.getMessage());
             e.printStackTrace();
@@ -85,7 +96,7 @@ public class HelloController {
             connection.setDoOutput(true);
 
             String response = readResponse(connection);
-            areaTextBox.setText(response + "\n");
+            areaTextBox.appendText(response + "\n");
         }catch (Exception e){
             areaTextBox.setText("Error " + e.getMessage());
         }

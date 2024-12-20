@@ -15,7 +15,7 @@
    <children>
       <AnchorPane prefHeight="294.0" prefWidth="457.0">
          <children>
-            <TextArea fx:id="areaTextBox" layoutX="14.0" layoutY="14.0" prefHeight="265.0" prefWidth="200.0" wrapText="true" />
+            <TextArea fx:id="areaTextBox" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="265.0" prefWidth="200.0" wrapText="true" />
             <TextField fx:id="inputName" layoutX="309.0" layoutY="14.0" />
             <Label layoutX="241.0" layoutY="18.0" text="Name" />
             <Label layoutX="241.0" layoutY="51.0" text="Description" />
