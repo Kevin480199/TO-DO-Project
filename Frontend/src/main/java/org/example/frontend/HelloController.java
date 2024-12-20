@@ -269,6 +269,7 @@ public class HelloController {
         // Use Platform.runLater to make sure this runs after the scene has been set
         Platform.runLater(() -> {
             Stage stage = (Stage) areaTextBox.getScene().getWindow();
+            stage.show();
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {
