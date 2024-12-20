@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -49,6 +49,8 @@ public class HelloController {
 
     @FXML
     private TabPane tabPane;
+
+    private String dataToSave;
 
     @FXML
     void addNewTask(ActionEvent event) {
@@ -261,6 +263,57 @@ public class HelloController {
             //replaceDisplay.setText(response + "\n");
         }catch (Exception e){
             replaceDisplay.setText("Error " + e.getMessage());
+        }
+    }
+    public void initialize() {
+        // Use Platform.runLater to make sure this runs after the scene has been set
+        Platform.runLater(() -> {
+            Stage stage = (Stage) areaTextBox.getScene().getWindow();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    saveDataOnExit();
+                }
+            });
+        });
+    }
+    private void saveDataOnExit() {
+        dataToSave = areaTextBox.getText();  // Get data from the TextField
+
+        // Show a confirmation alert before saving
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save your data before exiting?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                try {
+                    saveData();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                System.out.println("Exiting without saving.");
+            }
+        });
+    }
+    private void saveData() throws Exception {
+        System.out.println("Data to save: " + dataToSave);
+        // Here you would save data to a file or database, for example:
+        ArrayList<Task> tasks = fetchTasks();
+        // File file = new File("saved_data.txt");
+        // Create an ObjectMapper instance (Jackson's main class for JSON processing)
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Define the file where data will be saved
+        File file = new File("appData.json");
+        // PrintWriter writer = new PrintWriter(file);
+        // writer.println(dataToSave);
+        // writer.close();
+        try {
+            // Serialize the ArrayList of Task objects to the file
+            objectMapper.writeValue(file, tasks);
+            System.out.println("Tasks saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error saving tasks to JSON.");
         }
     }
 }

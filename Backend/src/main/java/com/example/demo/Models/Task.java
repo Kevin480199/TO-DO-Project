@@ -10,6 +10,9 @@ public class Task {
         this.name = name;
         this.description = description;
     }
+    public Task() {
+        // You can set default values here if needed
+    }
 
     public int getId() {
         return id;
