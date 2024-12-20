@@ -3,10 +3,9 @@ package org.example.frontend;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +28,27 @@ public class HelloController {
 
     @FXML
     private TextField inputName;
+
+    @FXML
+    private TextArea addDisplay;
+
+    @FXML
+    private TextArea deleteDisplay;
+
+    @FXML
+    private TextField replaceID;
+
+    @FXML
+    private TextField replaceDescription;
+
+    @FXML
+    private TextArea replaceDisplay;
+
+    @FXML
+    private TextField replaceName;
+
+    @FXML
+    private TabPane tabPane;
 
     @FXML
     void addNewTask(ActionEvent event) {
@@ -57,16 +77,16 @@ public class HelloController {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
                 Task createdTask = mapper.readValue(response, Task.class); // Assuming the server returns the created Task with ID
 
-                areaTextBox.appendText("Task successfully added!\n");
-                areaTextBox.appendText("ID: " + createdTask.getId() + "\n");
-                areaTextBox.appendText("Name: " + createdTask.getName() + "\n");
-                areaTextBox.appendText("Description: " + createdTask.getDescription() + "\n");
+                addDisplay.setText("Task successfully added!\n" +
+                                    "ID: " + createdTask.getId() + "\n" +
+                                    "Name: " + createdTask.getName() + "\n" +
+                                    "Description: " + createdTask.getDescription() + "\n");
 
             } else {
-                areaTextBox.appendText("Error: Unable to add task.\n");
+                addDisplay.setText("Error: Unable to add task.\n");
             }
         } catch (Exception e) {
-            areaTextBox.setText("Error: " + e.getMessage());
+            addDisplay.setText("Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -96,15 +116,64 @@ public class HelloController {
             connection.setDoOutput(true);
 
             String response = readResponse(connection);
-            areaTextBox.appendText(response + "\n");
+            deleteDisplay.appendText(response + "\n");
         }catch (Exception e){
-            areaTextBox.setText("Error " + e.getMessage());
+            deleteDisplay.setText("Error " + e.getMessage());
         }
-
-
     }
     @FXML
-    void getAllTasks(ActionEvent event) {
+    void handlerClickEvent(Event event){
+
+        Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
+
+        // Check which tab is selected and take action accordingly
+        if (selectedTab != null) {
+            getAllTasks();
+            System.out.println("Selected Tab: " + selectedTab.getText());
+        }
+    }
+
+    @FXML
+    void addClear(Event event){
+
+        Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
+
+        // Check which tab is selected and take action accordingly
+        if (selectedTab != null) {
+            inputName.clear();
+            inputDescription.clear();
+            addDisplay.clear();
+            System.out.println("Selected Tab: " + selectedTab.getText());
+        }
+    }
+    @FXML
+    void deleteClear(Event event){
+
+        Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
+
+        // Check which tab is selected and take action accordingly
+        if (selectedTab != null) {
+            inputID.clear();
+            deleteDisplay.clear();
+            System.out.println("Selected Tab: " + selectedTab.getText());
+        }
+    }
+    @FXML
+    void replaceClear(Event event){
+
+        Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
+
+        // Check which tab is selected and take action accordingly
+        if (selectedTab != null) {
+            replaceID.clear();
+            replaceDescription.clear();
+            replaceName.clear();
+            replaceDisplay.clear();
+            System.out.println("Selected Tab: " + selectedTab.getText());
+        }
+    }
+
+    void getAllTasks() {
         try{
 
             try {
@@ -153,11 +222,11 @@ public class HelloController {
     @FXML
     void replaceTask(ActionEvent event) {
         try{
-            int id = Integer.parseInt(inputID.getText());
-            String name = inputName.getText();
-            String description = inputDescription.getText();
+            int id = Integer.parseInt(replaceID.getText());
+            String name = replaceName.getText();
+            String description = replaceDescription.getText();
             if (id == 0 || name.isEmpty() || description.isEmpty()) {
-                Platform.runLater(() -> areaTextBox.setText("All fields are required."));
+                Platform.runLater(() -> replaceDisplay.setText("All fields are required."));
                 return;
             }
             Task myTask = new Task(name, description);
@@ -178,9 +247,20 @@ public class HelloController {
             }
 
             String response = readResponse(connection);
-            areaTextBox.setText(response + "\n");
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                Task createdTask = mapper.readValue(response, Task.class); // Assuming the server returns the created Task with ID
+
+                replaceDisplay.setText("Task successfully added!\n" +
+                        "ID: " + createdTask.getId() + "\n" +
+                        "Name: " + createdTask.getName() + "\n" +
+                        "Description: " + createdTask.getDescription() + "\n");
+
+            } else {
+                replaceDisplay.setText("Error: Unable to add task.\n");
+            }
+            //replaceDisplay.setText(response + "\n");
         }catch (Exception e){
-            areaTextBox.setText("Error " + e.getMessage());
+            replaceDisplay.setText("Error " + e.getMessage());
         }
     }
 }
