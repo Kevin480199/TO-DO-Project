@@ -7,9 +7,12 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -317,4 +320,53 @@ public class HelloController {
             System.out.println("Error saving tasks to JSON.");
         }
     }
+    @FXML
+    void clearAll(ActionEvent event) {
+        try{
+            String urlString = "http://localhost:8100/api/task/tasks";  // Your API URL
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                throw new Exception("Failed to delete tasks: " + connection.getResponseCode());
+            }
+            getAllTasks();
+            String response = readResponse(connection);
+
+            // Close the connection after reading the response
+            connection.disconnect();
+
+        }catch (Exception e){
+
+        }
+
+    }
+    @FXML
+    void openReadMeFile(ActionEvent event) {
+        String fileName = "README.md";
+
+        try {
+            //constructor of file class having file as argument
+            File file = new File(fileName);
+            if(!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
+            {
+                System.out.println("not supported");
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            if(file.exists())         //checks file exists or not
+                desktop.open(file);              //opens the specified file
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void closeApplication(ActionEvent event) {
+        saveDataOnExit();
+        Platform.exit();
+    }
+
 }
