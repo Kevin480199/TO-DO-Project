@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
@@ -15,8 +16,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import java.net.URL?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.example.frontend.HelloController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -40,13 +40,13 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TabPane fx:id="tabPane" prefHeight="473.0" prefWidth="459.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" prefHeight="369.0" prefWidth="459.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab onSelectionChanged="#handlerClickEvent" text="Display">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="302.0" prefWidth="459.0">
                      <children>
-                        <TextArea fx:id="areaTextBox" editable="false" layoutX="8.0" layoutY="16.0" prefHeight="265.0" prefWidth="342.0" wrapText="true" />
+                        <TextArea fx:id="areaTextBox" editable="false" layoutX="8.0" layoutY="16.0" prefHeight="265.0" prefWidth="333.0" wrapText="true" />
                      </children>
                   </AnchorPane>
             </content>
@@ -103,5 +103,3 @@
         <URL value="@style.css" />
     </stylesheets>
 </VBox>
-
-
