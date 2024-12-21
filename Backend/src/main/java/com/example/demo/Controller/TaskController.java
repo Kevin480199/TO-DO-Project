@@ -67,6 +67,12 @@ public class TaskController implements TaskService {
                         break;
                     }
                 }
+                if(task.getId() == 0){
+                    counter = tasks.get(tasks.size() - 1).getId();
+                    counter++;
+                    task.setId(counter);
+                    tasks.add(task);
+                }
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
         }else {

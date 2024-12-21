@@ -1,27 +1,85 @@
 /* Styling the root layout */
 .root {
-    -fx-background-color: lightblue;
+    -fx-background-color: 
+        lightblue,
+        linear-gradient(#eaf6fd 0%, #addaf3 25%, #88ccf4 75%, #58baf3 100%);
+    
 }
 
 /* Styling a button */
 .button {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
+    -fx-background-color: 
+        #3c7fb1,
+        linear-gradient(#fafdfe, #e8f5fc),
+        linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 3,2,1;
+    -fx-padding: 3 30 3 30;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
 }
 
 /* Styling the Label */
 .label {
     -fx-text-fill: #2c3e50;
-    -fx-font-size: 18px;
+    -fx-font-size: 10px;
     -fx-font-family: "Arial";
-    -fx-font-weight: bold;
 }
 
 /* Add hover effect */
 .button:hover {
-    -fx-background-color: #2980b9;
+    -fx-background-color: 
+        #025493,
+        linear-gradient(#fafdfe, #036397),
+        linear-gradient(#708089 0%, #5f7079 25%, #819baa 75%, #678596 100%);
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 3,2,1;
+    -fx-padding: 3 30 3 30;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
 }
+#tabPane {
+    -fx-background-color: rgb(255, 255, 255);
+    -fx-effect: dropshadow(gaussian, #000000, 10, 1, 1, 1);
+    -fx-border-color: #3498db;  /* Blue border */
+    -fx-border-width: 2px;
+    -fx-padding: 10px; /* Adds padding around the TabPane */
+}
+
+.tab-header-area {
+    -fx-background-color: #3498db; /* Tab header background */
+}
+
+.tab {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #3498db;
+}
+
+
+
+.tab:hover {
+    -fx-background-color: #01ccff;
+}
+
+.text {
+    -fx-font-size: 10px;
+    -fx-text-fill: #2c3e50;
+    -fx-effect: dropshadow(gaussian, #bdc3c7, 10, 0, 3, 3);
+}
+.menu-bar {
+    -fx-background-color: #f8f8f8;
+    -fx-effect: dropshadow(gaussian, #bdc3c7, 10, 0, 3, 3);
+    -fx-border-color: #3498db;  /* Blue border */
+    -fx-border-width: 2px;
+}
+
+.menu-bar .menu-item {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.menu-bar .menu-item:hover {
+    -fx-background-color: #82baf1;
+}
+
+
