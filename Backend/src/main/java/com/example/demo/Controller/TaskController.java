@@ -106,5 +106,10 @@ public class TaskController implements TaskService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task with ID " + id + " Was not found");
         }
     }
+    @DeleteMapping("/tasks")
+    public ResponseEntity<Void> deleteAllTasks() {
+        tasks.clear();  // Clear the list of tasks
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();  // 204 No Content
+    }
 
 }

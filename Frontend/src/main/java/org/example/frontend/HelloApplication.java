@@ -16,6 +16,7 @@ public class HelloApplication extends Application {
         Platform.runLater(() -> {
             stage.show();
         });
+        // Read external css styling file
         scene.getStylesheets().add(HelloApplication.class.getResource("style.css").toExternalForm());
 
         stage.setTitle("TO-DO-List");
