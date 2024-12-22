@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -300,17 +301,13 @@ public class HelloController {
     }
     private void saveData() throws Exception {
         System.out.println("Data to save: " + dataToSave);
-        // Here you would save data to a file or database, for example:
+        // Fetch all tasks with method fetchTasks
         ArrayList<Task> tasks = fetchTasks();
-        // File file = new File("saved_data.txt");
         // Create an ObjectMapper instance (Jackson's main class for JSON processing)
         ObjectMapper objectMapper = new ObjectMapper();
 
         // Define the file where data will be saved
         File file = new File("appData.json");
-        // PrintWriter writer = new PrintWriter(file);
-        // writer.println(dataToSave);
-        // writer.close();
         try {
             // Serialize the ArrayList of Task objects to the file
             objectMapper.writeValue(file, tasks);
@@ -367,6 +364,26 @@ public class HelloController {
     void closeApplication(ActionEvent event) {
         saveDataOnExit();
         Platform.exit();
+    }
+    @FXML
+    void textOnly(KeyEvent event) {
+        TextField sourceTextField = (TextField) event.getSource();
+        String input = sourceTextField.getText();
+
+        // Allow only alphabetic characters (a-z, A-Z)
+        if (!input.matches("[a-zA-Z0-9 ]*")) {
+            sourceTextField.setText(input.replaceAll("[^a-zA-Z0-9 ]", "")); // Remove non-letter characters
+        }
+    }
+    @FXML
+    void digitsOnly(KeyEvent event) {
+        TextField sourceTextField = (TextField) event.getSource();
+        String input = sourceTextField.getText();
+
+        // Allow only alphabetic characters (a-z, A-Z)
+        if (!input.matches("[0-9]*")) {
+            sourceTextField.setText(input.replaceAll("[^0-9]", "")); // Remove non-letter characters
+        }
     }
 
 }
