@@ -42,7 +42,7 @@
       </MenuBar>
       <TabPane fx:id="tabPane" prefHeight="369.0" prefWidth="459.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab onSelectionChanged="#handlerClickEvent" text="Display">
+          <Tab onSelectionChanged="#handlerClickEvent" text="List">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="302.0" prefWidth="459.0">
                      <children>

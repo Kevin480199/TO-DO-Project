@@ -256,7 +256,7 @@ public class HelloController {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Task createdTask = mapper.readValue(response, Task.class); // Assuming the server returns the created Task with ID
 
-                replaceDisplay.setText("Task successfully added!\n" +
+                replaceDisplay.setText("Task successfully changed!\n" +
                         "ID: " + createdTask.getId() + "\n" +
                         "Name: " + createdTask.getName() + "\n" +
                         "Description: " + createdTask.getDescription() + "\n");
