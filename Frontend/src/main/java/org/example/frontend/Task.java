@@ -1,13 +1,13 @@
 package org.example.frontend;
 
-public class Task {
+public class Task<T> {
     private int id = 0;
-    private String name;
+    private T name;
     private String description;
 
     public Task() {}
 
-    public Task(String name, String description) {
+    public Task(T name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -21,11 +21,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getName() {
+    public T getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(T name) {
         this.name = name;
     }
 
