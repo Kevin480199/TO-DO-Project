@@ -62,7 +62,7 @@ public class HelloController {
             String name = inputName.getText();
             String description = inputDescription.getText();
             // Creates an object
-            Task myTask = new Task(name, description);
+            Task<String> myTask = new Task(name, description);
             // Convert object to a json
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(myTask);
@@ -235,7 +235,7 @@ public class HelloController {
                 Platform.runLater(() -> replaceDisplay.setText("All fields are required."));
                 return;
             }
-            Task myTask = new Task(name, description);
+            Task<String> myTask = new Task(name, description);
 
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(myTask);
@@ -371,8 +371,8 @@ public class HelloController {
         String input = sourceTextField.getText();
 
         // Allow only alphabetic characters (a-z, A-Z)
-        if (!input.matches("[a-zA-Z0-9 ]*")) {
-            sourceTextField.setText(input.replaceAll("[^a-zA-Z0-9 ]", "")); // Remove non-letter characters
+        if (!input.matches("[a-zA-Z0-9 .]*")) {
+            sourceTextField.setText(input.replaceAll("[^a-zA-Z0-9 .]", "")); // Remove non-letter characters
         }
     }
     @FXML
