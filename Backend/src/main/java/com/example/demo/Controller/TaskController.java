@@ -53,6 +53,7 @@ public class TaskController implements TaskService {
 
     @PostMapping
     public ResponseEntity<Task> addTask(@RequestBody Task task){
+        // Give a task a unique number
         if(task != null){
             if (tasks.isEmpty()){
                 counter = 1;
@@ -67,6 +68,7 @@ public class TaskController implements TaskService {
                         break;
                     }
                 }
+                // Bug fix
                 if(task.getId() == 0){
                     counter = tasks.get(tasks.size() - 1).getId();
                     counter++;
@@ -81,9 +83,12 @@ public class TaskController implements TaskService {
     }
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody Task updateTask){
+        // Find task that should be updated
         for (Task task : tasks) {
             if (task.getId() == id) {
+                // Set name
                 task.setName(updateTask.getName());
+                // Set description
                 task.setDescription(updateTask.getDescription());
                 return ResponseEntity.ok(task);
             }
@@ -94,8 +99,10 @@ public class TaskController implements TaskService {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTask(@PathVariable int id){
         boolean found = false;
+        // Find the task that should be removed
         for (int i = 0; i < tasks.size(); i++) {
             if(tasks.get(i).getId() == id){
+                //Removes the task
                 tasks.remove(i);
                 found = true;
             }
@@ -108,6 +115,7 @@ public class TaskController implements TaskService {
     }
     @DeleteMapping("/tasks")
     public ResponseEntity<Void> deleteAllTasks() {
+        // Clear arraylist from all tasks
         tasks.clear();  // Clear the list of tasks
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();  // 204 No Content
     }
